@@ -1,22 +1,35 @@
 import styled from 'styled-components';
 import Form from './Form';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 class EmptyForm{
   constructor(){
+    this.name = "";
     this.email = "";
     this.password = "";
+    this.confirmPassword = "";
   }
 }
 
-export default function Login(){
+export default function SignUp(){
   const [formState, setFormState] = useState(new EmptyForm());
 
+  const confirmPasswordRef = useRef(null);
   return (
     <PageWrapper>
       <Logo>MyWallet</Logo>
       <Form>
+        <input 
+          required
+          type="text"
+          placeholder="Nome"
+          value={formState.name}
+          onChange={(e)=>{
+            formState.name = e.target.value;
+            setFormState({...formState});
+          }}
+        />
         <input 
           required
           type="email"
@@ -37,9 +50,25 @@ export default function Login(){
             setFormState({...formState});
           }}
         />
+        <input
+          required
+          type = "password"
+          placeholder = "Confirme a senha"
+          value = {formState.confirmPassword}
+          ref = {confirmPasswordRef}
+          onChange={(e)=>{
+            formState.confirmPassword = e.target.value;
+            setFormState({...formState});
+            if (formState.password === formState.confirmPassword){
+              e.target.setCustomValidity('');
+            } else {
+              e.target.setCustomValidity('Senhas não coincidem');
+            }
+          }}
+        />
         <button>Entrar</button>
       </Form>
-      <Footer><Link to="/signup">Primeira vez? Cadastre-se!</Link></Footer>
+      <Footer><Link to="/login">Já tem uma conta? Entre agora!</Link></Footer>
     </PageWrapper>
   );
 }
