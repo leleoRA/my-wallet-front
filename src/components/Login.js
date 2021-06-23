@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import Form from './Form';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
+import UserContext from '../contexts/UserContext';
 
 class EmptyForm{
   constructor(){
@@ -12,11 +14,24 @@ class EmptyForm{
 
 export default function Login(){
   const [formState, setFormState] = useState(new EmptyForm());
+  const history = useHistory();
+  const {setUser} = useContext(UserContext);
+  function customSubmit() {
+    axios
+      .post("http://localhost:4000/login", formState)
+      .then(({data}) => {
+        setUser(data);
+        localStorage.setItem("user", JSON.stringify(data))
+        history.push("/")
+      })
+      .catch((e) => alert(e));
+  }
+
 
   return (
     <PageWrapper>
       <Logo>MyWallet</Logo>
-      <Form>
+      <Form customSubmit={customSubmit}>
         <input 
           required
           type="email"

@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
 const Form = styled.form.attrs(props=>({
-  onSubmit: (e) => e.preventDefault() && props.onSubmit()
+  onSubmit: (e) => {
+    e.preventDefault();
+    props.customSubmit();
+  }
 }))`
   display: flex;
   flex-direction: column;
