@@ -9,17 +9,27 @@ import SignUp from "./components/SignUp";
 import Home from "./components/Home";
 import NewLog from "./components/NewLog";
 import {PrivateRoute, PublicOnlyRoute} from "./components/PrivateRoute";
+import axios from 'axios';
+import Config from "./helper_functions/Config";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [logs, setLogs] = useState([]);
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   useEffect(() => {
-    setIsFirstRender(false);
     const userStorage = localStorage.getItem("user");
     if (userStorage !== null) {
-      setUser(JSON.parse(userStorage));
-    }
+      const localUser = JSON.parse(userStorage);
+      setUser(localUser);
+      console.log(localUser);
+      const config = new Config(localUser.token);
+      axios
+        .get("http://localhost:4000/logs", config)
+        .then(({data})=>setLogs(data))
+        .catch(e=>alert(e))
+        .finally(()=>setIsFirstRender(false))
+    } else setIsFirstRender(false);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const authed = user === null ? false : true;
@@ -27,7 +37,7 @@ function App() {
   return isFirstRender ? (
     <></>
   ) : (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, logs, setLogs }}>
       <BrowserRouter>
         <GlobalStyles />
         <Switch>
