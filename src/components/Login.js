@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Form from "./Form";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
@@ -22,6 +22,7 @@ export default function Login() {
     axios
       .post("http://localhost:4000/login", formState)
       .then(({ data: user }) => {
+        console.log(user);
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         const config = new Config(user.token);
@@ -31,22 +32,35 @@ export default function Login() {
         setLogs(logs);
         history.push("/");
       })
-      .catch(e=>{
-        alert(e);
+      .catch(err=>{
+        if (err?.response?.status === 401){
+          passwordRef.current.setCustomValidity("Senha incorreta");
+          formRef.current.reportValidity();
+        } else if (err?.response?.status === 404) { 
+          emailRef.current.setCustomValidity("e-mail não cadastrado");
+          formRef.current.reportValidity();        
+        } else {
+          alert(err);
+        }
         logOut(user, setUser, history);
       });
   }
 
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const formRef = useRef(null);
   return (
     <PageWrapper>
       <Logo>MyWallet</Logo>
-      <Form customSubmit={customSubmit}>
+      <Form ref={formRef} customSubmit={customSubmit}>
         <input
           required
+          ref={emailRef}
           type="email"
           placeholder="E-mail"
           value={formState.email}
           onChange={(e) => {
+            emailRef.current.setCustomValidity("");
             formState.email = e.target.value;
             setFormState({ ...formState });
           }}
@@ -56,7 +70,9 @@ export default function Login() {
           type="password"
           placeholder="Senha"
           value={formState.password}
+          ref={passwordRef}
           onChange={(e) => {
+            passwordRef.current.setCustomValidity("");
             formState.password = e.target.value;
             setFormState({ ...formState });
           }}
