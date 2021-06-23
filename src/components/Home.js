@@ -18,7 +18,7 @@ export default function Home(){
   useEffect(()=>{
     const config = new Config(user.token);
     axios
-      .get("http://localhost:4000/statement", config)
+      .get("http://localhost:4000/logs", config)
       .then(({data})=>setEntries(data))
       .catch(e=>alert(e))
   },[])

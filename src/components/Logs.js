@@ -2,9 +2,13 @@ import styled from 'styled-components';
 import dayjs from "dayjs";
 
 export default function Logs({ entries }) {
-  const balance = entries.reduce((acc,entry)=>acc+=entry.value,0);
+  const balance = entries.reduce((acc,entry)=>{
+    const val = entry.logKind === "earning" ? entry.value : -entry.value;
+    return acc += val;
+  },0);
+
   const balanceText = (balance/100).toFixed(2).replace(".",",");
-  const balanceClass = balance > 0 ? "logs--value-earning" : "logs--value:expenditure";
+  const balanceClass = balance > 0 ? "logs--value-earning" : "logs--value-expenditure";
 
   return (
     <LogsWrapper>
@@ -76,6 +80,7 @@ const ListWrapper = styled.ul`
   height: calc(100% - 40px);
   max-height: calc(100% - 40px);
   overflow-y: scroll;
+  padding-bottom: 20px;
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {

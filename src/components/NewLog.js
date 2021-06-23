@@ -13,22 +13,29 @@ class EmptyForm{
 }
 
 export default function NewLog(){
-  const {user} = useContext(UserContext);
+  const {user, logs, setLogs} = useContext(UserContext);
   const [formState, setFormState] = useState(new EmptyForm());
 
   const {logType} = useParams();
   const history = useHistory();
 
   const submitLog = () =>{
-    const path = logType === "expenditure" ? "/new/expenditure" : "/new/earning"
+    const path = logType === "expenditure" ? "/logs/expenditure/new" : "/logs/earning/new"
     const body = {...formState};
-
+    let valString = Number(body.value).toFixed(2);
+    valString = valString.replace(/[,.]/,"");
+    const valInt = parseInt(valString);
+    body.value = valInt;
     body.userId = user.id;
+    
     const config = new Config(user.token);
 
     axios
     .post("http://localhost:4000"+path, body, config)
-    .then(()=>history.push("/"))
+    .then(({data})=>{
+      setLogs({...logs, data})
+      history.push("/");
+    })
     .catch(error=>alert(error))
   }
 
@@ -47,6 +54,7 @@ export default function NewLog(){
           type="number"
           min="0"
           placeholder="Valor"
+          step="0.01"
           value={formState.value}
           onChange={(e)=>{
             formState.value = e.target.value;
