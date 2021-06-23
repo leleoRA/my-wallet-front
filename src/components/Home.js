@@ -15,7 +15,7 @@ export default function Home(){
     <PageWrapper>
       <Header>
         <p>Olá, {user.name}</p>
-        <RiLogoutBoxRLine onClick={()=>logOut(setUser,history)} />
+        <RiLogoutBoxRLine onClick={()=>logOut(user, setUser,history)} />
       </Header>
       <Main>
         {
