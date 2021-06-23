@@ -1,10 +1,11 @@
-import styled from 'styled-components';
-import Form from './Form';
-import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import Form from "./Form";
+import { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
 
-class EmptyForm{
-  constructor(){
+class EmptyForm {
+  constructor() {
     this.name = "";
     this.email = "";
     this.password = "";
@@ -12,65 +13,70 @@ class EmptyForm{
   }
 }
 
-export default function SignUp(){
-  const [formState, setFormState] = useState(new EmptyForm());
+export default function SignUp() {
+  const history = useHistory();
 
-  const confirmPasswordRef = useRef(null);
+  const [formState, setFormState] = useState(new EmptyForm());
+  function customSubmit() {
+    const body = { ...formState };
+    delete body["confirmPassword"];
+    axios
+      .post("http://localhost:4000/signup", body)
+      .then(() => history.push("/"))
+      .catch((e) => alert(e));
+  }
+
   return (
     <PageWrapper>
       <Logo>MyWallet</Logo>
-      <Form>
-        <input 
+      <Form customSubmit={customSubmit}>
+        <input
           required
           type="text"
           placeholder="Nome"
           value={formState.name}
-          onChange={(e)=>{
-            formState.name = e.target.value;
-            setFormState({...formState});
-          }}
+          onChange={(e) => formChange(e, formState, setFormState, "name")}
         />
-        <input 
+        <input
           required
           type="email"
           placeholder="E-mail"
           value={formState.email}
-          onChange={(e)=>{
-            formState.email = e.target.value;
-            setFormState({...formState});
-          }}
+          onChange={(e) => formChange(e, formState, setFormState, "email")}
         />
         <input
           required
           type="password"
           placeholder="Senha"
           value={formState.password}
-          onChange={(e)=>{
-            formState.password = e.target.value;
-            setFormState({...formState});
-          }}
+          onChange={(e) => formChange(e, formState, setFormState, "password")}
         />
         <input
           required
-          type = "password"
-          placeholder = "Confirme a senha"
-          value = {formState.confirmPassword}
-          ref = {confirmPasswordRef}
-          onChange={(e)=>{
-            formState.confirmPassword = e.target.value;
-            setFormState({...formState});
-            if (formState.password === formState.confirmPassword){
-              e.target.setCustomValidity('');
+          type="password"
+          placeholder="Confirme a senha"
+          value={formState.confirmPassword}
+          onChange={(e) => {
+            formChange(e, formState, setFormState, "confirmPassword");
+            if (formState.password === formState.confirmPassword) {
+              e.target.setCustomValidity("");
             } else {
-              e.target.setCustomValidity('Senhas não coincidem');
+              e.target.setCustomValidity("Senhas não coincidem");
             }
           }}
         />
-        <button>Entrar</button>
+        <button>Cadastrar</button>
       </Form>
-      <Footer><Link to="/login">Já tem uma conta? Entre agora!</Link></Footer>
+      <Footer>
+        <Link to="/login">Já tem uma conta? Entre agora!</Link>
+      </Footer>
     </PageWrapper>
   );
+}
+
+function formChange(e, state, setState, key) {
+  state[key] = e.target.value;
+  setState({ ...state });
 }
 
 const PageWrapper = styled.div`
@@ -82,18 +88,18 @@ const PageWrapper = styled.div`
   min-height: 100vh;
   width: 100%;
 
-  h1{
+  h1 {
     margin-bottom: 24px;
   }
 
-  form{
+  form {
     margin-bottom: 36px;
   }
-`
+`;
 const Logo = styled.h1`
   font-size: 32px;
   line-height: 50px;
-  font-family: 'Saira Stencil One', cursive;
+  font-family: "Saira Stencil One", cursive;
 `;
 
 const Footer = styled.footer`
@@ -101,6 +107,3 @@ const Footer = styled.footer`
   font-size: 15px;
   line-height: 18px;
 `;
-
-
-
