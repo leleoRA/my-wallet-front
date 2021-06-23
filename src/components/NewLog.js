@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import Form from './Form';
 import { useState, useContext } from 'react';
 import axios from 'axios';
-import { Link , useLocation, useHistory, useParams} from 'react-router-dom';
+import { useHistory, useParams} from 'react-router-dom';
 import UserContext from '../contexts/UserContext';
 import Config from '../helper_functions/Config';
+
 class EmptyForm{
   constructor(){
     this.value = "";
@@ -27,13 +28,13 @@ export default function NewLog(){
     const valInt = parseInt(valString);
     body.value = valInt;
     body.userId = user.id;
-    
+
     const config = new Config(user.token);
 
     axios
     .post("http://localhost:4000"+path, body, config)
-    .then(({data})=>{
-      setLogs({...logs, data})
+    .then(({data:newLog})=>{
+      setLogs([newLog, ...logs])
       history.push("/");
     })
     .catch(error=>alert(error))

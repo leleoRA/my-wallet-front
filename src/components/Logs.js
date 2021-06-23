@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import dayjs from "dayjs";
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
-export default function Logs({ logs }) {
+export default function Logs() {
+  const {logs} = useContext(UserContext);
+  
   const balance = logs.reduce((acc,log)=>{
     const val = log.logKind === "earning" ? log.value : -log.value;
     return acc += val;
@@ -15,7 +19,7 @@ export default function Logs({ logs }) {
       <ListWrapper>
         {logs.map((log) => {
           return (
-            <li>
+            <li key={log.id}>
               <p className="logs--date">
                 {dayjs(log.createdAt).format("DD/MM")}
               </p>
