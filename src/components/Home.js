@@ -1,15 +1,27 @@
 import styled from 'styled-components';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import UserContext from '../contexts/UserContext';
 import {RiLogoutBoxRLine} from 'react-icons/ri'
 import {AiOutlinePlusCircle, AiOutlineMinusCircle} from 'react-icons/ai';
 import logOut from '../helper_functions/logOut';
+import axios from 'axios';
+import Config from '../helper_functions/Config';
+import dayjs from 'dayjs';
+import Logs from './Logs';
 
 export default function Home(){
   const {user, setUser} = useContext(UserContext);
   const history = useHistory();
   const [entries, setEntries] = useState([]);
+
+  useEffect(()=>{
+    const config = new Config(user.token);
+    axios
+      .get("http://localhost:4000/statement", config)
+      .then(({data})=>setEntries(data))
+      .catch(e=>alert(e))
+  },[])
   return (
     <PageWrapper>
       <Header>
@@ -20,15 +32,15 @@ export default function Home(){
         {
           entries.length === 0 
           ? <Overlay><p>Não há registros de<br/>entrada ou saída</p></Overlay>
-          : <ul></ul>
+          : <Logs entries={entries} />
         }
       </Main>
       <Footer>
-        <AnchorButton to="/newearning">
+        <AnchorButton to="/new/earning">
           <AiOutlinePlusCircle size="22"/>
           <p>Nova<br/>entrada</p>
         </AnchorButton>
-        <AnchorButton to="/newexpenditure">
+        <AnchorButton to="/new/expenditure">
           <AiOutlineMinusCircle size="22"/>
           <p>Nova<br/>saída</p>
         </AnchorButton>

@@ -11,7 +11,7 @@ export function PrivateRoute ({component: Component, authed, ...rest}) {
   )
 }
 
-export function PublicOnlyRouth ({component: Component, authed, ...rest}) {
+export function PublicOnlyRoute ({component: Component, authed, ...rest}) {
   return (
     <Route
       {...rest}
