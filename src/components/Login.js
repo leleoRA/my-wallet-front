@@ -16,9 +16,11 @@ class EmptyForm {
 
 export default function Login() {
   const [formState, setFormState] = useState(new EmptyForm());
+  const [isDisabled, setIsDisabled] = useState(false);
   const history = useHistory();
   const { user, setUser, setLogs } = useContext(UserContext);
   function customSubmit() {
+    setIsDisabled(false)
     axios
       .post("http://localhost:4000/login", formState)
       .then(({ data: user }) => {
@@ -33,17 +35,21 @@ export default function Login() {
         history.push("/");
       })
       .catch(err=>{
+        console.log(err.response.status);
         if (err?.response?.status === 401){
+          passwordRef.current.disabled = false;
           passwordRef.current.setCustomValidity("Senha incorreta");
           formRef.current.reportValidity();
         } else if (err?.response?.status === 404) { 
+          emailRef.current.disabled = false;
           emailRef.current.setCustomValidity("e-mail não cadastrado");
-          formRef.current.reportValidity();        
+          formRef.current.reportValidity();
         } else {
           alert(err);
         }
         logOut(user, setUser, history);
-      });
+      })
+      .finally(()=>setIsDisabled(false))
   }
 
   const emailRef = useRef(null);
@@ -55,11 +61,13 @@ export default function Login() {
       <Form ref={formRef} customSubmit={customSubmit}>
         <input
           required
+          disabled={isDisabled}
           ref={emailRef}
           type="email"
           placeholder="E-mail"
           value={formState.email}
           onChange={(e) => {
+            passwordRef.current.setCustomValidity("");
             emailRef.current.setCustomValidity("");
             formState.email = e.target.value;
             setFormState({ ...formState });
@@ -67,6 +75,7 @@ export default function Login() {
         />
         <input
           required
+          disabled={isDisabled}
           type="password"
           placeholder="Senha"
           value={formState.password}
@@ -77,7 +86,10 @@ export default function Login() {
             setFormState({ ...formState });
           }}
         />
-        <button>Entrar</button>
+        <button
+          disabled={isDisabled}
+        >Entrar
+        </button>
       </Form>
       <Footer>
         <Link to="/signup">Primeira vez? Cadastre-se!</Link>

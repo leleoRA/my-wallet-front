@@ -31,6 +31,9 @@ const Form = styled.form.attrs(props=>({
     width: 100%;
     border-radius: 5px;
     border: none;
+    &:disabled{
+      filter: brightness(0.5);
+    }
   }
 
   /* Chrome, Safari, Edge, Opera */
