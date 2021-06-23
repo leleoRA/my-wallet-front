@@ -1,38 +1,50 @@
 import styled from 'styled-components';
 import { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import UserContext from '../contexts/UserContext';
 import {RiLogoutBoxRLine} from 'react-icons/ri'
 import {AiOutlinePlusCircle, AiOutlineMinusCircle} from 'react-icons/ai';
+import logOut from '../helper_functions/logOut';
 
 export default function Home(){
-  const {userFirstName} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
+  const history = useHistory();
   const [entries, setEntries] = useState([]);
   return (
     <PageWrapper>
       <Header>
-        <p>Olá, {userFirstName}</p>
-        <RiLogoutBoxRLine />
+        <p>Olá, {user.name}</p>
+        <RiLogoutBoxRLine onClick={()=>logOut(setUser,history)} />
       </Header>
       <Main>
         {
           entries.length === 0 
           ? <Overlay><p>Não há registros de<br/>entrada ou saída</p></Overlay>
-          : <p></p>
+          : <ul></ul>
         }
       </Main>
       <Footer>
-        <AnchorButton>
+        <AnchorButton to="/newearning">
           <AiOutlinePlusCircle size="22"/>
           <p>Nova<br/>entrada</p>
         </AnchorButton>
-        <AnchorButton>
+        <AnchorButton to="/newexpenditure">
           <AiOutlineMinusCircle size="22"/>
           <p>Nova<br/>saída</p>
         </AnchorButton>
       </Footer>
     </PageWrapper>
   );
+}
+
+function Statement({entries}){
+  return (
+    <div>
+      <ul>
+        {entries.forEach()}
+      </ul>
+    </div>
+  )
 }
 
 const PageWrapper = styled.div`
@@ -61,6 +73,10 @@ const Header = styled.header`
   line-height: 30px;
   width: 100%;
   height: 30px;
+
+  svg{
+    cursor: pointer;
+  }
 `;
 
 const Main = styled.main`
