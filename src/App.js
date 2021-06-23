@@ -1,7 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import { BrowserRouter, useLocation, useHistory } from "react-router-dom";
-import { Switch, Route } from "react-router";
+import { BrowserRouter, useHistory } from "react-router-dom";
+import { Switch } from "react-router";
 import UserContext from "./contexts/UserContext";
 import GlobalStyles from "./components/GlobalStyles";
 import Login from "./components/Login";
@@ -11,11 +11,13 @@ import NewLog from "./components/NewLog";
 import {PrivateRoute, PublicOnlyRoute} from "./components/PrivateRoute";
 import axios from 'axios';
 import Config from "./helper_functions/Config";
+import logOut from "./helper_functions/logOut";
 
 function App() {
   const [user, setUser] = useState(null);
   const [logs, setLogs] = useState([]);
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
     const userStorage = localStorage.getItem("user");
@@ -26,7 +28,10 @@ function App() {
       axios
         .get("http://localhost:4000/logs", config)
         .then(({data})=>setLogs(data))
-        .catch(e=>alert(e))
+        .catch(e=>{
+          alert(e);
+          logOut(user, setUser, history);
+        })
         .finally(()=>setIsFirstRender(false))
     } else setIsFirstRender(false);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps

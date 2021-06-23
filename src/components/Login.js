@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../contexts/UserContext";
 import Config from "../helper_functions/Config";
+import logOut from "../helper_functions/logOut";
 
 class EmptyForm {
   constructor() {
@@ -16,7 +17,7 @@ class EmptyForm {
 export default function Login() {
   const [formState, setFormState] = useState(new EmptyForm());
   const history = useHistory();
-  const { setUser, setLogs } = useContext(UserContext);
+  const { user, setUser, setLogs } = useContext(UserContext);
   function customSubmit() {
     axios
       .post("http://localhost:4000/login", formState)
@@ -30,7 +31,10 @@ export default function Login() {
         setLogs(logs);
         history.push("/");
       })
-      .catch((e) => alert(e));
+      .catch(e=>{
+        alert(e);
+        logOut(user, setUser, history);
+      });
   }
 
   return (
