@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import dayjs from "dayjs";
 
-export default function Logs({ entries }) {
-  const balance = entries.reduce((acc,entry)=>{
-    const val = entry.logKind === "earning" ? entry.value : -entry.value;
+export default function Logs({ logs }) {
+  const balance = logs.reduce((acc,log)=>{
+    const val = log.logKind === "earning" ? log.value : -log.value;
     return acc += val;
   },0);
 
@@ -13,17 +13,17 @@ export default function Logs({ entries }) {
   return (
     <LogsWrapper>
       <ListWrapper>
-        {entries.map((entry) => {
+        {logs.map((log) => {
           return (
             <li>
               <p className="logs--date">
-                {dayjs(entry.createdAt).format("DD/MM")}
+                {dayjs(log.createdAt).format("DD/MM")}
               </p>
               <p className="logs--description">
-                {entry.description}
+                {log.description}
               </p>
-              <p className={entry.logKind === "earning" ? "logs--value-earning" : "logs--value-expenditure"}>
-                {(entry.value/100).toFixed(2).replace('.',',')}
+              <p className={log.logKind === "earning" ? "logs--value-earning" : "logs--value-expenditure"}>
+                {(log.value/100).toFixed(2).replace('.',',')}
               </p>
             </li>
           );
