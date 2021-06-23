@@ -22,7 +22,6 @@ function App() {
     if (userStorage !== null) {
       const localUser = JSON.parse(userStorage);
       setUser(localUser);
-      console.log(localUser);
       const config = new Config(localUser.token);
       axios
         .get("http://localhost:4000/logs", config)
@@ -41,8 +40,8 @@ function App() {
       <BrowserRouter>
         <GlobalStyles />
         <Switch>
-          <PublicOnlyRoute exact path="/login" component={Login} />
-          <PublicOnlyRoute exact path="/signup" component={SignUp} />
+          <PublicOnlyRoute exact authed={authed} path="/login" component={Login} />
+          <PublicOnlyRoute exact authed={authed} path="/signup" component={SignUp} />
           <PrivateRoute
             authed={authed}
             exact
