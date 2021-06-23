@@ -1,27 +1,16 @@
 import styled from 'styled-components';
-import { useState, useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import UserContext from '../contexts/UserContext';
 import {RiLogoutBoxRLine} from 'react-icons/ri'
 import {AiOutlinePlusCircle, AiOutlineMinusCircle} from 'react-icons/ai';
 import logOut from '../helper_functions/logOut';
-import axios from 'axios';
-import Config from '../helper_functions/Config';
-import dayjs from 'dayjs';
 import Logs from './Logs';
 
 export default function Home(){
-  const {user, setUser} = useContext(UserContext);
+  const {user, setUser, logs} = useContext(UserContext);
   const history = useHistory();
-  const [entries, setEntries] = useState([]);
 
-  useEffect(()=>{
-    const config = new Config(user.token);
-    axios
-      .get("http://localhost:4000/logs", config)
-      .then(({data})=>setEntries(data))
-      .catch(e=>alert(e))
-  },[])
   return (
     <PageWrapper>
       <Header>
@@ -30,9 +19,9 @@ export default function Home(){
       </Header>
       <Main>
         {
-          entries.length === 0 
+          logs.length === 0 
           ? <Overlay><p>Não há registros de<br/>entrada ou saída</p></Overlay>
-          : <Logs entries={entries} />
+          : <Logs logs={logs} />
         }
       </Main>
       <Footer>
@@ -47,16 +36,6 @@ export default function Home(){
       </Footer>
     </PageWrapper>
   );
-}
-
-function Statement({entries}){
-  return (
-    <div>
-      <ul>
-        {entries.forEach()}
-      </ul>
-    </div>
-  )
 }
 
 const PageWrapper = styled.div`
