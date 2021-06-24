@@ -1,37 +1,54 @@
-import styled from 'styled-components';
-import { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import UserContext from '../contexts/UserContext';
-import {RiLogoutBoxRLine} from 'react-icons/ri'
-import {AiOutlinePlusCircle, AiOutlineMinusCircle} from 'react-icons/ai';
-import logOut from '../helper_functions/logOut';
-import Logs from './Logs';
+import styled from "styled-components";
+import { useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 
-export default function Home(){
-  const {user, setUser, logs} = useContext(UserContext);
+import UserContext from "../contexts/UserContext";
+
+import logOut from "../helper_functions/logOut";
+
+import Logs from "../components/Logs";
+
+export default function Home() {
+  const { user, setUser, logs } = useContext(UserContext);
   const history = useHistory();
 
   return (
     <PageWrapper>
       <Header>
         <p>Olá, {user.name}</p>
-        <RiLogoutBoxRLine onClick={()=>logOut(user, setUser,history)} />
+        <RiLogoutBoxRLine onClick={() => logOut(user, setUser, history)} />
       </Header>
       <Main>
-        {
-          logs.length === 0 
-          ? <Overlay><p>Não há registros de<br/>entrada ou saída</p></Overlay>
-          : <Logs logs={logs} />
-        }
+        {logs.length === 0 ? (
+          <Overlay>
+            <p>
+              Não há registros de
+              <br />
+              entrada ou saída
+            </p>
+          </Overlay>
+        ) : (
+          <Logs logs={logs} />
+        )}
       </Main>
       <Footer>
         <AnchorButton to="/new/earning">
-          <AiOutlinePlusCircle size="22"/>
-          <p>Nova<br/>entrada</p>
+          <AiOutlinePlusCircle size="22" />
+          <p>
+            Nova
+            <br />
+            entrada
+          </p>
         </AnchorButton>
         <AnchorButton to="/new/expenditure">
-          <AiOutlineMinusCircle size="22"/>
-          <p>Nova<br/>saída</p>
+          <AiOutlineMinusCircle size="22" />
+          <p>
+            Nova
+            <br />
+            saída
+          </p>
         </AnchorButton>
       </Footer>
     </PageWrapper>
@@ -46,11 +63,11 @@ const PageWrapper = styled.div`
   height: 100vh;
   width: 100%;
 
-  header{
+  header {
     margin-bottom: 24px;
   }
 
-  main{
+  main {
     margin-bottom: 13px;
   }
 `;
@@ -65,7 +82,7 @@ const Header = styled.header`
   width: 100%;
   height: 30px;
 
-  svg{
+  svg {
     cursor: pointer;
   }
 `;
@@ -109,8 +126,6 @@ const AnchorButton = styled(Link)`
   font-size: 17px;
   line-height: 20px;
   border-radius: 5px;
-  background-color: #A328D6;
+  background-color: #a328d6;
   font-weight: bold;
 `;
-
-

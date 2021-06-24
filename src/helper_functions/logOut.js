@@ -6,9 +6,8 @@ export default function logOut(user, setUser, history) {
   const config = new Config(user.token);
   axios
     .post("http://localhost:4000/logout", {}, config)
-    .catch((e) => alert(e))
+    .catch((err) => alert(err))
     .finally(() => history.push("/login"));
   setUser(null);
   localStorage.clear();
 }
-

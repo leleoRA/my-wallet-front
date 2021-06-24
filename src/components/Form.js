@@ -1,10 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const Form = styled.form.attrs(props=>({
+const Form = styled.form.attrs((props) => ({
   onSubmit: (e) => {
     e.preventDefault();
     props.customSubmit();
-  }
+  },
 }))`
   display: flex;
   flex-direction: column;
@@ -22,30 +22,31 @@ const Form = styled.form.attrs(props=>({
   button {
     height: 46px;
     font-weight: bold;
-    background-color: #A328D6;
+    background-color: #a328d6;
     cursor: pointer;
     color: white;
   }
 
-  input, button{
+  input,
+  button {
     width: 100%;
     border-radius: 5px;
     border: none;
-    &:disabled{
-      filter: brightness(0.5);
+    &:disabled {
+      filter: brightness(0.8);
     }
   }
 
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
 
   /* Firefox */
-  input[type=number] {
-  -moz-appearance: textfield;
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 `;
 

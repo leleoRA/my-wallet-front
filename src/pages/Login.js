@@ -1,13 +1,16 @@
 import styled from "styled-components";
-import Form from "./Form";
 import { useContext, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+
 import UserContext from "../contexts/UserContext";
+
+import Form from "../components/Form";
+
 import Config from "../helper_functions/Config";
 import logOut from "../helper_functions/logOut";
 
-class EmptyForm {
+class FormState {
   constructor() {
     this.email = "";
     this.password = "";
@@ -15,12 +18,13 @@ class EmptyForm {
 }
 
 export default function Login() {
-  const [formState, setFormState] = useState(new EmptyForm());
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [formState, setFormState] = useState(new FormState());
+  const [isInteractive, setIsInteractive] = useState(true);
   const history = useHistory();
   const { user, setUser, setLogs } = useContext(UserContext);
-  function customSubmit() {
-    setIsDisabled(false)
+
+  function submitLogin() {
+    setIsInteractive(false);
     axios
       .post("http://localhost:4000/login", formState)
       .then(({ data: user }) => {
@@ -34,13 +38,13 @@ export default function Login() {
         setLogs(logs);
         history.push("/");
       })
-      .catch(err=>{
+      .catch((err) => {
         console.log(err.response.status);
-        if (err?.response?.status === 401){
+        if (err?.response?.status === 401) {
           passwordRef.current.disabled = false;
           passwordRef.current.setCustomValidity("Senha incorreta");
           formRef.current.reportValidity();
-        } else if (err?.response?.status === 404) { 
+        } else if (err?.response?.status === 404) {
           emailRef.current.disabled = false;
           emailRef.current.setCustomValidity("e-mail não cadastrado");
           formRef.current.reportValidity();
@@ -49,7 +53,7 @@ export default function Login() {
         }
         logOut(user, setUser, history);
       })
-      .finally(()=>setIsDisabled(false))
+      .finally(() => setIsInteractive(true));
   }
 
   const emailRef = useRef(null);
@@ -58,10 +62,10 @@ export default function Login() {
   return (
     <PageWrapper>
       <Logo>MyWallet</Logo>
-      <Form ref={formRef} customSubmit={customSubmit}>
+      <Form ref={formRef} customSubmit={submitLogin}>
         <input
           required
-          disabled={isDisabled}
+          disabled={!isInteractive}
           ref={emailRef}
           type="email"
           placeholder="E-mail"
@@ -75,7 +79,7 @@ export default function Login() {
         />
         <input
           required
-          disabled={isDisabled}
+          disabled={!isInteractive}
           type="password"
           placeholder="Senha"
           value={formState.password}
@@ -86,10 +90,7 @@ export default function Login() {
             setFormState({ ...formState });
           }}
         />
-        <button
-          disabled={isDisabled}
-        >Entrar
-        </button>
+        <button disabled={!isInteractive}>Entrar</button>
       </Form>
       <Footer>
         <Link to="/signup">Primeira vez? Cadastre-se!</Link>
