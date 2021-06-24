@@ -37,7 +37,7 @@ export default function Login() {
         history.push("/");
       })
       .catch((err) => {
-        console.log(err.response.status);
+        setIsInteractive(true);
         if (err?.response?.status === 401) {
           passwordRef.current.disabled = false;
           passwordRef.current.setCustomValidity("Senha incorreta");
@@ -50,7 +50,6 @@ export default function Login() {
           alert(err);
         }
       })
-      .finally(() => setIsInteractive(true));
   }
 
   const emailRef = useRef(null);

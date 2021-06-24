@@ -27,8 +27,10 @@ export default function SignUp() {
     axios
       .post("http://localhost:4000/signup", body)
       .then(() => history.push("/"))
-      .catch((e) => alert(e))
-      .finally(() => setIsInteractive(true));
+      .catch((e) => {
+        alert(e);
+        setIsInteractive(true)
+      })
   }
 
   return (

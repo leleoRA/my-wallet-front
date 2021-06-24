@@ -31,7 +31,7 @@ function App() {
         .then(({ data: logs }) => setLogs(logs))
         .catch((err) => {
           alert(err);
-          logOut(localUser, setUser, history);
+          logOut(localUser, setUser, setLogs, history);
         })
         .finally(() => setIsReadyToRender(true));
     } else setIsReadyToRender(true);

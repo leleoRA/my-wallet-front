@@ -43,8 +43,10 @@ export default function NewLog() {
         setLogs([newLog, ...logs]);
         history.push("/");
       })
-      .catch((error) => alert(error))
-      .finally(() => setIsInteractive(true));
+      .catch((error) => {
+        alert(error);
+        setIsInteractive(true)
+      })
   };
 
   return (

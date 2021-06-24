@@ -11,14 +11,14 @@ import logOut from "../helper_functions/logOut";
 import Logs from "../components/Logs";
 
 export default function Home() {
-  const { user, setUser, logs } = useContext(UserContext);
+  const { user, setUser, logs , setLogs} = useContext(UserContext);
   const history = useHistory();
 
   return (
     <PageWrapper>
       <Header>
         <p>Olá, {user.name}</p>
-        <RiLogoutBoxRLine onClick={() => logOut(user, setUser, history)} />
+        <RiLogoutBoxRLine onClick={() => logOut(user, setUser, setLogs, history)} />
       </Header>
       <Main>
         {logs.length === 0 ? (
