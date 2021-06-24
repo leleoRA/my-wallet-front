@@ -26,11 +26,12 @@ function App() {
       setUser(localUser);
       const config = new Config(localUser.token);
       axios
-        .get("http://localhost:4000/logs", config)
+        .get("http://localhost:4000/sessions/withtoken", config)
+        .then(()=> {return axios.get("http://localhost:4000/logs", config)})
         .then(({ data: logs }) => setLogs(logs))
         .catch((err) => {
           alert(err);
-          logOut(user, setUser, history);
+          logOut(localUser, setUser, history);
         })
         .finally(() => setIsReadyToRender(true));
     } else setIsReadyToRender(true);

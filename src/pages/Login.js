@@ -8,7 +8,6 @@ import UserContext from "../contexts/UserContext";
 import Form from "../components/Form";
 
 import Config from "../helper_functions/Config";
-import logOut from "../helper_functions/logOut";
 
 class FormState {
   constructor() {
@@ -21,14 +20,13 @@ export default function Login() {
   const [formState, setFormState] = useState(new FormState());
   const [isInteractive, setIsInteractive] = useState(true);
   const history = useHistory();
-  const { user, setUser, setLogs } = useContext(UserContext);
+  const { setUser, setLogs } = useContext(UserContext);
 
   function submitLogin() {
     setIsInteractive(false);
     axios
       .post("http://localhost:4000/login", formState)
       .then(({ data: user }) => {
-        console.log(user);
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         const config = new Config(user.token);
@@ -51,7 +49,6 @@ export default function Login() {
         } else {
           alert(err);
         }
-        logOut(user, setUser, history);
       })
       .finally(() => setIsInteractive(true));
   }
