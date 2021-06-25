@@ -37,7 +37,7 @@ export default function NewLog() {
     const config = new Config(user.token);
 
     axios
-      .post("http://localhost:4000" + path, body, config)
+      .post("https://my-wallet-vel.herokuapp.com" + path, body, config)
       .then(({ data: newLog }) => {
         setLogs([newLog, ...logs]);
         history.push("/");

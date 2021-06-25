@@ -25,7 +25,7 @@ export default function SignUp() {
     const body = { ...formState };
     delete body["confirmPassword"];
     axios
-      .post("http://localhost:4000/signup", body)
+      .post("https://my-wallet-vel.herokuapp.com/signup", body)
       .then(() => history.push("/"))
       .catch((e) => {
         alert(e);

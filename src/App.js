@@ -29,9 +29,9 @@ function App() {
       setUser(localUser);
       const config = new Config(localUser.token);
       axios
-        .get("http://localhost:4000/sessions/withtoken", config)
+        .get("https://my-wallet-vel.herokuapp.com/sessions/withtoken", config)
         .then(() => {
-          return axios.get("http://localhost:4000/logs", config);
+          return axios.get("https://my-wallet-vel.herokuapp.com/logs", config);
         })
         .then(({ data: logs }) => setLogs(logs))
         .catch((err) => {

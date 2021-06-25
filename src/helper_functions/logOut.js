@@ -15,7 +15,7 @@ export default function logOut(user, setUser, setLogs, history) {
   } else {
     const config = new Config(user.token);
     axios
-      .post("http://localhost:4000/logout", {}, config)
+      .post("https://my-wallet-vel.herokuapp.com/logout", {}, config)
       .catch((err) => alert(err))
       .finally(() => clearAndPush());
   }

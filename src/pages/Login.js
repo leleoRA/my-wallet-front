@@ -25,12 +25,12 @@ export default function Login() {
   function submitLogin() {
     setIsInteractive(false);
     axios
-      .post("http://localhost:4000/login", formState)
+      .post("https://my-wallet-vel.herokuapp.com/login", formState)
       .then(({ data: user }) => {
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
         const config = new Config(user.token);
-        return axios.get("http://localhost:4000/logs", config);
+        return axios.get("https://my-wallet-vel.herokuapp.com/logs", config);
       })
       .then(({ data: logs }) => {
         setLogs(logs);
