@@ -33,7 +33,6 @@ export default function NewLog() {
     valString = valString.replace(/[,.]/, "");
     const valInt = parseInt(valString);
     body.value = valInt;
-    body.userId = user.id;
 
     const config = new Config(user.token);
 
