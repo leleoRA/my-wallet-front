@@ -6,19 +6,21 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 
 import UserContext from "../contexts/UserContext";
 
-import logOut from "../helper_functions/logOut";
-
 import Logs from "../components/Logs";
 
+import logOut from "../helper_functions/logOut";
+
 export default function Home() {
-  const { user, setUser, logs , setLogs} = useContext(UserContext);
+  const { user, setUser, logs, setLogs } = useContext(UserContext);
   const history = useHistory();
 
   return (
     <PageWrapper>
       <Header>
         <p>Olá, {user.name}</p>
-        <RiLogoutBoxRLine onClick={() => logOut(user, setUser, setLogs, history)} />
+        <RiLogoutBoxRLine
+          onClick={() => logOut(user, setUser, setLogs, history)}
+        />
       </Header>
       <Main>
         {logs.length === 0 ? (

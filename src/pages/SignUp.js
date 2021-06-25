@@ -29,8 +29,8 @@ export default function SignUp() {
       .then(() => history.push("/"))
       .catch((e) => {
         alert(e);
-        setIsInteractive(true)
-      })
+        setIsInteractive(true);
+      });
   }
 
   return (

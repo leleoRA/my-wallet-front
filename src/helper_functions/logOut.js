@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import Config from "./Config";
 
 export default function logOut(user, setUser, setLogs, history) {
@@ -8,7 +9,7 @@ export default function logOut(user, setUser, setLogs, history) {
     setLogs([]);
     history.push("/login");
   }
-  
+
   if (!user || !typeof user === "object" || !user.token) {
     clearAndPush();
   } else {

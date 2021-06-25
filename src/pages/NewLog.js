@@ -44,8 +44,8 @@ export default function NewLog() {
       })
       .catch((error) => {
         alert(error);
-        setIsInteractive(true)
-      })
+        setIsInteractive(true);
+      });
   };
 
   return (

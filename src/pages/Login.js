@@ -49,7 +49,7 @@ export default function Login() {
         } else {
           alert(err);
         }
-      })
+      });
   }
 
   const emailRef = useRef(null);

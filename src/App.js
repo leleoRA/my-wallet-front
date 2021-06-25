@@ -1,15 +1,18 @@
-import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter, useHistory } from "react-router-dom";
+import axios from "axios";
 import { Switch } from "react-router";
-import UserContext from "./contexts/UserContext";
-import GlobalStyles from "./components/GlobalStyles";
+
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import NewLog from "./pages/NewLog";
+
+import UserContext from "./contexts/UserContext";
+
+import GlobalStyles from "./components/GlobalStyles";
 import { PrivateRoute, PublicOnlyRoute } from "./components/PrivateRoute";
-import axios from "axios";
+
 import Config from "./helper_functions/Config";
 import logOut from "./helper_functions/logOut";
 
@@ -27,7 +30,9 @@ function App() {
       const config = new Config(localUser.token);
       axios
         .get("http://localhost:4000/sessions/withtoken", config)
-        .then(()=> {return axios.get("http://localhost:4000/logs", config)})
+        .then(() => {
+          return axios.get("http://localhost:4000/logs", config);
+        })
         .then(({ data: logs }) => setLogs(logs))
         .catch((err) => {
           alert(err);
