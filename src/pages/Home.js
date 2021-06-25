@@ -34,7 +34,7 @@ export default function Home() {
         )}
       </Main>
       <Footer>
-        <AnchorButton to="/new/earning">
+        <AnchorButton to="/earning/new">
           <AiOutlinePlusCircle size="22" />
           <p>
             Nova
@@ -42,7 +42,7 @@ export default function Home() {
             entrada
           </p>
         </AnchorButton>
-        <AnchorButton to="/new/expenditure">
+        <AnchorButton to="/expenditure/new">
           <AiOutlineMinusCircle size="22" />
           <p>
             Nova

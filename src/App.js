@@ -61,10 +61,10 @@ function App() {
           <PrivateRoute
             authed={authed}
             exact
-            path="/new/:logType"
+            path="/:logType/new"
             component={NewLog}
           />
-          <PrivateRoute authed={authed} exact path="/" component={Home} />
+          <PrivateRoute authed={authed} path="/" component={Home} />
         </Switch>
       </BrowserRouter>
     </UserContext.Provider>
